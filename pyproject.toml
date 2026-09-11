@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multi-axis-maxk"
+version = "0.1.0"
+description = "Multi-axis max@K reinforcement learning for representative diversity in text-to-image generation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT AND Apache-2.0 AND LicenseRef-Imscore"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "licenses/*"]
+dependencies = [
+  "numpy==1.26.4",
+  "torch==2.6.0",
+]
+
+[project.optional-dependencies]
+train = [
+  "absl-py==2.3.1",
+  "accelerate==1.4.0",
+  "diffusers==0.33.1",
+  "huggingface-hub==0.29.1",
+  "ml-collections==1.1.0",
+  "peft==0.10.0",
+  "pillow==10.4.0",
+  "protobuf>=3.20,<6",
+  "sentencepiece==0.2.1",
+  "torchvision==0.21.0",
+  "tqdm==4.67.1",
+  "transformers==4.40.0",
+  "wandb==0.18.7",
+]
+demo = ["matplotlib>=3.8"]
+test = ["pytest==8.3.5", "ruff==0.11.13"]
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2607.14962"
+Repository = "https://github.com/KuOnoda/multi-axis-maxk"
+
+[tool.setuptools.packages.find]
+include = ["multi_axis_maxk*", "flow_grpo*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["flow_grpo/diffusers_patch"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
