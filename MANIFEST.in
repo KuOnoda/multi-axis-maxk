@@ -1,0 +1,7 @@
+recursive-include configs *.py *.yaml
+recursive-include data *.txt
+recursive-include evaluation *.py
+recursive-include examples *.py
+recursive-include scripts *.sh
+recursive-include training *.py
+recursive-include tests *.py

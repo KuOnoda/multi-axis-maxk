@@ -1,0 +1,38 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+env/
+build/
+dist/
+
+# Local credentials and experiment tracking
+.env
+.env.*
+!.env.example
+wandb/
+
+# Models, generated samples, and checkpoints
+models/
+outputs/
+logs/
+checkpoints/
+examples/figures/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.onnx
+
+# Editor / OS files
+.DS_Store
+.idea/
+.vscode/
+
+# Pick-a-Pic prompts are fetched on demand (scripts/fetch_pickapic_prompts.sh)
+data/pickapic/
