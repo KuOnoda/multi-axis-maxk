@@ -1,33 +1,35 @@
-# Multi-Axis Max@K Reinforcement Learning for Representative Diversity in Text-to-Image Generation (WACV 2027)
+# MultiMaxPO: Multi-Axis Max@K Reinforcement Learning for Representative Diversity in Text-to-Image Generation (WACV 2027)
 
 **Ku Onoda, Paavo Parmas, Hiroki Furuta, Soichiro Nishimori, Yuta Oshima,
 Shohei Taniguchi, and Yutaka Matsuo**
 
 [![arXiv](https://img.shields.io/badge/arXiv-2607.14962-b31b1b.svg)](https://arxiv.org/abs/2607.14962)
 
-Official PyTorch implementation of the WACV 2027 paper **Multi-Axis Max@K**. We train diffusion
-models to cover multiple target modes across a set of images. Each mode selects
-its strongest representative before rewards are aggregated, allowing different
-images to receive credit for different modes.
+Official PyTorch implementation of **MultiMaxPO**, the diffusion RL method of the
+WACV 2027 paper. MultiMaxPO trains diffusion models to cover multiple target
+modes across a set of images by optimizing a multi-axis max@K objective: each
+mode selects its strongest representative before rewards are aggregated, so
+different images receive credit for different modes.
 
 <p align="center">
   <img src="assets/figure1_color_modes.png" width="70%" alt="Seven rule-based color modes covered by different samples of the same prompt">
 </p>
 <p align="center"><i>
-Seven pixel-based color rewards, one per column. After training, different
-samples for the same prompt cover different modes.
+Seven pixel-based color rewards, one per column. After training with MultiMaxPO,
+different samples for the same prompt cover different modes.
 </i></p>
 
 <p align="center">
   <img src="assets/figure2_method_overview.png" width="100%" alt="Method overview">
 </p>
 <p align="center"><i>
-For each prompt, an m-image group is scored on D reward axes. Max@K credit is
-computed independently per axis, normalized within the group, and then summed
-into the policy advantage.
+For each prompt, the policy generates m candidates, and each is scored on D
+reward axes r_d. MultiMaxPO takes the maximum over samples on each axis, credits
+the sample that sets it, and sums the per-axis advantages into the per-sample
+advantage for a GRPO-style update.
 </i></p>
 
-This repository includes the max@K estimator, a nine-mode synthetic demo, and
+This repository includes the MultiMaxPO advantage estimator, a nine-mode synthetic demo, and
 SD3.5-M training and evaluation for the perceived-appearance experiments
 (CLIP rewards) and the controlled color experiment (rule-based pixel rewards).
 
@@ -77,7 +79,7 @@ TRAIN_SEED=42 bash scripts/train_paper.sh race5 maxk
 ```
 
 Choose an axis (`race5`, `gender2`, `race5_gender2`) and a method
-(`maxk`, `max1`, `count`). Repeat with seeds 0, 1, and 42 for multi-run
+(`maxk` for MultiMaxPO, `max1` for GRPO (k=1), `count` for GRPO (count)). Repeat with seeds 0, 1, and 42 for multi-run
 evaluation. The launcher defaults to **32 GPU processes**, 16 candidates per
 prompt, and 360 optimizer steps. W&B logging is offline by default.
 
